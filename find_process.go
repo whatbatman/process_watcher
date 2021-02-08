@@ -1,8 +1,10 @@
 package main
 
 import (
+	"io/ioutil"
 	"os"
 	"path"
+	"path/filepath"
 	"strconv"
 )
 
@@ -24,4 +26,15 @@ func findProcess(_pid int) (string, error) {
 		return "", err
 	}
 	return pidPath, nil
+}
+
+// parse /proc/<pid>/io
+
+func getChildren(pidPath string) ([]string, error) {
+	// get the PID so we can build the /proc/<pid>/task/<tid>/children path
+	pid := filepath.Base(pidPath)
+	taskPath := path.Join(pidPath, "task")
+	tidPath := path.Join(taskPath, pid)
+	childrenPath := path.Join(tidPath, "children")
+	data, err := ioutil.ReadFile(childrenPath)
 }

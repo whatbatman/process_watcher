@@ -24,3 +24,15 @@ func TestFindProcess(t *testing.T) {
 		}
 	})
 }
+
+func TestGetChildren(t *testing.T) {
+	t.Run("Get the one child", func(t *testing.T) {
+		childPID, err := getChildren("/proc/111885")
+		if err != nil {
+			t.Errorf("should have gotten no errors, but we got %v", err)
+		}
+		if len(childPID) > 1 {
+			t.Errorf("childPID should have been length 1, was %d", len(childPID))
+		}
+	})
+}
